@@ -1,6 +1,5 @@
 from django.contrib import admin
-from myapp.models import Article, FlatPage
-# Register your models here.
+from myapp.models import Article, FlatPage, Person
 
 
 class ArticleAdmin(admin.ModelAdmin):
@@ -29,4 +28,20 @@ admin.site.register(Article, ArticleAdmin)
 
 @admin.register(FlatPage)
 class FlatPageAdmin(admin.ModelAdmin):
-    fields = (('url', 'title'), 'content')
+    fieldsets = (
+        (None, {
+            'fields': ('url', 'title', 'content', 'sites')
+        }),
+        ('Advanced options',{
+            'classes': ('collapse',),
+            'fields': ('enable_comments', 'registration_required', 'template_name')
+        }),
+    )
+
+@admin.register(Person)
+class PersonAdmin(admin.ModelAdmin):
+    list_display = ('upper_case_name', 'name', 'decade_born_in', 'colored_name','born_in_fifities', )
+
+    def upper_case_name(self, obj):
+        return ("%s %s" % (obj.first_name, obj.last_name)).upper()
+    upper_case_name.short_description = 'Name'
