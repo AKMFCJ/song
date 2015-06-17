@@ -1,5 +1,8 @@
 from django.contrib import admin
-from myapp.models import Article, FlatPage
+from django import forms
+from django.db import models
+
+from myapp.models import Article, FlatPage, Person
 # Register your models here.
 
 
@@ -29,4 +32,30 @@ admin.site.register(Article, ArticleAdmin)
 
 @admin.register(FlatPage)
 class FlatPageAdmin(admin.ModelAdmin):
-    fields = (('url', 'title'), 'content')
+    fields = (('url', 'title'), 'content', 'article')
+
+
+class PersonForm(forms.ModelForm):
+
+    class Meta:
+        model = Person
+        exclude = ['name']
+
+
+@admin.register(Person)
+class PersonAdmin(admin.ModelAdmin):
+    #exclude = ['age']
+    #form = PersonForm
+    formfield_overrides = {
+        models.CharField: {'widget': models.TextField}
+    }
+
+
+
+from kombu.transport.django import models as kombu_models
+admin.site.register(kombu_models.Message)
+
+
+
+
+

@@ -26,9 +26,20 @@ class FlatPage(models.Model):
 	url = models.CharField(max_length=200)
 	title = models.CharField(max_length=200)
 	content = models.TextField()
+	article = models.ManyToManyField(Article)
 
 	def __str__(self):
 		return self.title
 
 	def __unicode__(self):
 		return u"%s" % self.title
+
+
+class Person(models.Model):
+	first_name = models.CharField(max_length=50)
+	last_name = models.CharField(max_length=50)
+	name = models.CharField(max_length=50)
+	age = models.IntegerField()
+
+	def __str__(self):
+		return self.first_name
